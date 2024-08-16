@@ -39,9 +39,9 @@ configure_file(
 execute_process(COMMAND powershell -ExecutionPolicy Bypass -File "${CMAKE_CURRENT_SOURCE_DIR}/!Update.ps1" "SOURCEGEN" "${PROJECT_VERSION}" "${CMAKE_CURRENT_BINARY_DIR}")
 include(${CMAKE_CURRENT_BINARY_DIR}/sourcelist.cmake)
 source_group(
-	TREE 
+	TREE
 		${CMAKE_CURRENT_SOURCE_DIR}
-	FILES 
+	FILES
 		${SOURCES}
 )
 
@@ -78,7 +78,7 @@ target_include_directories(
 
 # linkage
 target_link_libraries(
-	${PROJECT_NAME} 
+	${PROJECT_NAME}
 	PRIVATE
 		CommonLibSSE::CommonLibSSE
 		DKUtil::DKUtil
@@ -129,12 +129,12 @@ target_precompile_headers(
 
 # post build event
 add_custom_command(
-	TARGET 
+	TARGET
 		${PROJECT_NAME}
 	POST_BUILD
-		COMMAND 
+		COMMAND
 			powershell -NoProfile -ExecutionPolicy Bypass -File "${CMAKE_CURRENT_SOURCE_DIR}/!Update.ps1" "COPY" "${PROJECT_VERSION}" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$(ConfigurationName)" "${PROJECT_NAME}" "${ANNIVERSARY_EDITION}"
-		COMMENT 
+		COMMENT
 			"Updating project :))"
 )
 

@@ -21,7 +21,7 @@ function Resolve-Files {
         [Parameter(ValueFromPipeline)][string]$a_parent = $PSScriptRoot,
         [string[]]$a_directory = @('include', 'src', 'test')
     )
-    
+
     process {
         Push-Location $PSScriptRoot
         $_generated = [System.Collections.ArrayList]::new()
@@ -33,7 +33,7 @@ function Resolve-Files {
                 }
 
                 Get-ChildItem "$a_parent/$directory" -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
-                    ($_.Extension -in $SourceExt) -and 
+                    ($_.Extension -in $SourceExt) -and
                     ($_.Name -notmatch 'Plugin.h|Version.h')
                 } | Resolve-Path -Relative | ForEach-Object {
                     if (!$env:RebuildInvoke) {
@@ -41,10 +41,10 @@ function Resolve-Files {
                     }
                     $_generated.Add("`n`t`"$($_.Substring(2) -replace '\\', '/')`"") | Out-Null
                 }
-            }               
-            
+            }
+
             Get-ChildItem "$a_parent" -File -ErrorAction SilentlyContinue | Where-Object {
-                ($_.Extension -in $ConfigExt) -and 
+                ($_.Extension -in $ConfigExt) -and
                 ($_.Name -notmatch 'cmake|vcpkg')
             } | Resolve-Path -Relative | ForEach-Object {
                 if (!$env:RebuildInvoke) {
@@ -95,7 +95,7 @@ if ($Mode -eq 'COPY') {
 
         # configs
         Get-ChildItem $PSScriptRoot | Where-Object {
-            ($_.Extension -in $ConfigExt) -and 
+            ($_.Extension -in $ConfigExt) -and
             ($_.Name -notmatch 'CMake|vcpkg')
         } | ForEach-Object {
             Copy-Item $_.FullName "$Data/SKSE/Plugins/$($_.Name)" -Force
@@ -123,7 +123,7 @@ if ($Mode -eq 'COPY') {
     }
 
 
-	Add-Type -AssemblyName Microsoft.VisualBasic
+    Add-Type -AssemblyName Microsoft.VisualBasic
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
 
@@ -138,16 +138,16 @@ if ($Mode -eq 'COPY') {
         MinimizeBox = $false
         Font = New-Object System.Drawing.Font('Segoe UI', 10, [System.Drawing.FontStyle]::Regular)
     }
-    
+
     $Message = New-Object System.Windows.Forms.TextBox -Property @{
         ClientSize = '225, 150'
         Location = New-Object System.Drawing.Point(20, 20)
         Multiline = $true
         ReadOnly = $true
         Text = "- [$Project - $OldVersion] has been built."
-        
+
     }
-    
+
     $BtnCopyMO2 = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Copy to MO2'
@@ -162,7 +162,7 @@ if ($Mode -eq 'COPY') {
             $Message.Text += "`r`n- Copied to MO2."
         }
     }
-    
+
     $BtnCopyData = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Copy to Data'
@@ -176,7 +176,7 @@ if ($Mode -eq 'COPY') {
             $Message.Text += "`r`n- Copied to game data."
         }
     }
-    
+
     $BtnRemoveData = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Remove in Data'
@@ -190,7 +190,7 @@ if ($Mode -eq 'COPY') {
             $Message.Text += "`r`n- Removed from game data."
         }
     }
-    
+
     $BtnOpenFolder = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Show in Explorer'
@@ -200,7 +200,7 @@ if ($Mode -eq 'COPY') {
             Invoke-Item $Path
         }
     }
-    
+
     $BtnLaunchSKSEAE = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'SKSE (AE)'
@@ -232,7 +232,7 @@ if ($Mode -eq 'COPY') {
     if (!(Test-Path "$env:SkyrimSEPath/skse64_loader.exe" -PathType Leaf)) {
         $BtnLaunchSKSESE.Enabled = $false
     }
- 
+
     $BtnLaunchSKSEVR = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'SKSE (VR)'
@@ -248,21 +248,21 @@ if ($Mode -eq 'COPY') {
     if (!(Test-Path "$env:SkyrimVRPath/skse64_loader.exe" -PathType Leaf)) {
         $BtnLaunchSKSEVR.Enabled = $false
     }
-    
+
     $BtnBuildPapyrus = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Build Papyrus'
         Location = New-Object System.Drawing.Point(20, 240)
         Add_Click = {
             $BtnBuildPapyrus.Text = 'Compiling...'
-            
+
             $Invocation = "`"$($env:SkyrimSEPath)/Papyrus Compiler/PapyrusCompiler.exe`" `"$PSScriptRoot/Scripts/Source`" -f=`"$env:SkyrimSEPath/Papyrus Compiler/TESV_Papyrus_Flags.flg`" -i=`"$env:SkyrimSEPath/Data/Scripts/Source;$PSScriptRoot/Scripts;$PSScriptRoot/Scripts/Source`" -o=`"$PSScriptRoot/Scripts`" -a -op -enablecache -t=`"4`""
             Start-Process cmd.exe -ArgumentList "/k $Invocation && pause && exit"
-            
+
             $BtnBuildPapyrus.Text = 'Build Papyrus'
         }
     }
-    
+
     $BtnChangeVersion = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Version'
@@ -284,7 +284,7 @@ if ($Mode -eq 'COPY') {
             $OldVersion = $NewVersion
         }
     }
-    
+
     $BtnPublish = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Publish Mod'
@@ -301,8 +301,8 @@ if ($Mode -eq 'COPY') {
             $BtnPublish.Text = 'Publish Mod'
         }
     }
-    
-    
+
+
     $BtnExit = New-Object System.Windows.Forms.Button -Property @{
         ClientSize = '70, 50'
         Text = 'Exit'
@@ -311,7 +311,7 @@ if ($Mode -eq 'COPY') {
             $MsgBox.Close()
         }
     }
-                
+
     $MsgBox.Controls.Add($Message)
     $MsgBox.Controls.Add($BtnCopyData)
     $MsgBox.Controls.Add($BtnCopyMO2)
@@ -324,7 +324,7 @@ if ($Mode -eq 'COPY') {
     $MsgBox.Controls.Add($BtnLaunchSKSEAE)
     $MsgBox.Controls.Add($BtnLaunchSKSESE)
     $MsgBox.Controls.Add($BtnLaunchSKSEVR)
-    
+
     $MsgBox.ShowDialog() | Out-Null
     Exit
 }
