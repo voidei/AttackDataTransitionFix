@@ -1,14 +1,13 @@
 {
-    "name":  "attackdatatransitionfix",
-    "version-string":  "1.0.0",
-    "description":  "",
-    "license":  "MIT",
-    "dependencies":  [
-                         "spdlog"
-                     ],
-    "features":  {
-                     "mo2-install":  {
-                                         "description":  "Attack Data Transition Fix"
-                                     }
-                 }
+  "builtin-baseline": "2983a790bb019f83f5e2954d3c47de7b4f7f9c31",
+  "dependencies": [ "spdlog" ],
+  "description": "",
+  "features": {
+    "mo2-install": {
+      "description": "Attack Data Transition Fix"
+    }
+  },
+  "license": "MIT",
+  "name": "attackdatatransitionfix",
+  "version-string": "1.0.0"
 }
